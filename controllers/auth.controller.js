@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { get } from "mongoose";
 import bcrypt from "bcryptjs";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
+import { JWT_EXPIRES_IN, JWT_SECRET, NODE_ENV } from "../config/env.js";
 import User from "../models/user.model.js";
 
 export const signUp = async (req, res, next) => {
@@ -91,4 +91,18 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {};
+
+export const isAuthenticated = async (req, res, next) => {
+  try {
+    const { gettoken } = req.body;
+   const decoded = jwt.verify(gettoken,JWT_SECRET);
+   const user = await User.findOne({ _id: decoded.userId });
+   if(!user){
+    res.status(201).json({success:false})
+   }
+
+    res.status(200).json({success:true})
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,30 +1,16 @@
 import { Router } from "express";
+import authorize from "../Middlewares/auth.middleware.js";
+import { cancelSubscription, crateSubscription, deleteSubscription, getAllSubcription, getSubscriptionById, getUpcomingRenewals, getUserSubscription, updateSubscription } from "../controllers/subscription.controller.js";
 
 const subscriptionRoutes = Router();
 
-subscriptionRoutes.get("/", (req, res) => {
-    res.send({title:'GET all subscription'})
-});
-subscriptionRoutes.get("/:id", (req, res) => {
-    res.send({title:'GET subscription details'})
-});
-subscriptionRoutes.post("/", (req, res) => {
-    res.send({title:'CREATE subscription'})
-});
-subscriptionRoutes.put("/:id", (req, res) => {
-    res.send({title:'UPDATE subscription'})
-});
-subscriptionRoutes.delete("/:id", (req, res) => {
-    res.send({title:'DELETE subscription'})
-});
-subscriptionRoutes.get("/user/:id", (req, res) => {
-    res.send({title:'GET all user subscription'})
-});
-subscriptionRoutes.put("/:id/cancel", (req, res) => {
-    res.send({title:'CACEL subscription'})
-});
-subscriptionRoutes.get("/upcoming-renewals", (req, res) => {
-    res.send({title:'GET upcoming subscription'})
-});
+subscriptionRoutes.get("/",getAllSubcription);
+subscriptionRoutes.get("/:id", authorize,getSubscriptionById);
+subscriptionRoutes.post("/",authorize, crateSubscription);
+subscriptionRoutes.put("/:id",authorize,updateSubscription);
+subscriptionRoutes.delete("/:id",authorize,deleteSubscription);
+subscriptionRoutes.get("/user/:id", authorize,getUserSubscription);
+subscriptionRoutes.put("/cancel/:id", authorize, cancelSubscription);
+subscriptionRoutes.get("/upcoming-renewals/:id",authorize,getUpcomingRenewals);
 
 export default subscriptionRoutes;
