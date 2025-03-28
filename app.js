@@ -1,7 +1,5 @@
 import express from "express";
-import cookieParser from "cookie-parser";
-// import {PORT} from './config/env.js'
-
+import cookieParser from "cookie-parser";import {PORT} from './config/env.js'
 import authRouter from './routes/auth.routes.js'
 import userRouter from "./routes/user.Routes.js";
 import subscriptionRouter from './routes/subscription.routes.js'
@@ -29,10 +27,9 @@ app.use("*",(req, res)=>{
 })
 
 app.use(errorMiddleware)
-const port = process.env.PORT || 3000;
 
-app.listen(port,async ()=>{
-    console.log(`Subscription Tracker API is runnig on http://localhost:${port}`);
+app.listen(PORT,async ()=>{
+    console.log(`Subscription Tracker API is runnig on http://localhost:${PORT}`);
     await connecToDatabase();
     
 })
